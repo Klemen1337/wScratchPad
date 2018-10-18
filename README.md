@@ -1,6 +1,6 @@
 # wScratchPad.js
 
-A jQuery plugin to mimic a scratch card or pad behaviour.  Allowing you to scratch off an overlay as either a color or image.
+A plugin to mimic a scratch card or pad behaviour.  Allowing you to scratch off an overlay as either a color or image.
 
 * [View the wScratchPad demo](http://wscratchpad.websanova.com)
 * [Download the lastest version of wScratchPad](https://github.com/websanova/wScratchPad/tags)
@@ -17,16 +17,19 @@ A jQuery plugin to mimic a scratch card or pad behaviour.  Allowing you to scrat
 Available options with notes, the values here are the defaults.
 
 ```js
-$('#elem').wScratchPad({
-  size        : 5,          // The size of the brush/scratch.
-  bg          : '#cacaca',  // Background (image path or hex color).
-  fg          : '#6699ff',  // Foreground (image path or hex color).
-  realtime    : true,       // Calculates percentage in realitime.
-  scratchDown : null,       // Set scratchDown callback.
-  scratchUp   : null,       // Set scratchUp callback.
-  scratchMove : null,       // Set scratcMove callback.
-  cursor      : 'crosshair' // Set cursor.
-});
+new wScratchPad(
+  document.getElementById("elem"),
+  {
+    size        : 5,          // The size of the brush/scratch.
+    bg          : '#cacaca',  // Background (image path or hex color).
+    fg          : '#6699ff',  // Foreground (image path or hex color).
+    realtime    : true,       // Calculates percentage in realitime.
+    scratchDown : null,       // Set scratchDown callback.
+    scratchUp   : null,       // Set scratchUp callback.
+    scratchMove : null,       // Set scratcMove callback.
+    cursor      : 'crosshair' // Set cursor.
+  }
+);
 ```
 
 Note on `realtime`, if set to `false` this will only send percentage calculations to the `scratchUp` and should be used to increase performance.
@@ -54,31 +57,19 @@ $("#elem").wScratchPad({
 ### Update on the Fly
 
 ```js
-var sp = $("#elem").wScratchPad();
+var sp = new wScratchPad(document.getElementById("elem"));
 
-sp.wScratchPad('size', 5);
-sp.wScratchPad('cursor', 'url("./cursors/coin.png") 5 5, default');
-
-// Or directly with element.
-
-$("#elem").wScratchPad('image', './images/winner.png');
+sp.size = 5;
+sp.cursor = 'url("./cursors/coin.png") 5 5, default';
 ```
 
 ### Methods
 
 ```js
-$('#elem').wScratchPad('reset');
-$('#elem').wScratchPad('clear');
-$('#elem').wScratchPad('enabled', <boolean>);
+sp.reset();
+sp.clear();
+sp.enabled(true|false);
 ```
-
-
-## Resources
-
-* [More jQuery plugins by Websanova](http://websanova.com/plugins)
-* [Websanova JavaScript Extensions Project](http://websanova.com/extensions)
-* [jQuery Plugin Development Boilerplate](http://wboiler.websanova.com)
-* [The Ultimate Guide to Writing jQuery Plugins](http://www.websanova.com/blog/jquery/the-ultimate-guide-to-writing-jquery-plugins)
 
 
 ## License

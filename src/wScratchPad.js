@@ -3,7 +3,7 @@ class wScratchPad {
     this.$el = el;
     this.options = options;
 
-    let defaults = {
+    this.defaults = {
       size        : 30,          // The size of the brush/scratch.
       fg          : '#ccc',  // Foreground (image path or hex color).
       realtime    : true,       // Calculates percentage in realitime
@@ -13,7 +13,7 @@ class wScratchPad {
       cursor      : 'crosshair' // Set cursor.
     };
 
-    this.options = Object.assign(defaults, this.options);
+    this.options = Object.assign(this.defaults, this.options);
 
     this.init = false;
     this.enabled = true;
@@ -35,13 +35,15 @@ class wScratchPad {
     // Make sure it's at least relative.
     this.$el.style.position = 'relative';
 
-    // this.$img = $('<img src=''/>').attr('crossOrigin', '').css({position: 'absolute', width: '100%', height: '100%'});
+    // Create image element
     this.$img = document.createElement('img');
     this.$img.style.position = 'absolute';
     this.$img.style.width = '100%';
     this.$img.style.height = '100%';
+    this.$img.crossOrigin = '';
 
-    // Make sure we sett style width height here for elastic stretch
+
+    // Make sure we set style width height here for elastic stretch
     // and better support for mobile if we are resizing the scratch pad.
     // this.$scratchpad = $(this.canvas).css({position: 'absolute', width: '100%', height: '100%'});
     this.canvas.style.position = 'absolute';
@@ -49,7 +51,10 @@ class wScratchPad {
     this.canvas.style.height = '100%';
     this.$scratchpad = this.canvas;
     
+
+    // Bind mobile events
     this._bindMobileEvents(this.$scratchpad);
+
 
     // Setup event handlers.
     var that = this;
@@ -86,7 +91,7 @@ class wScratchPad {
     // Run options
     this._setOptions();
 
-    // Apepnd items
+    // Append items
     // this.$el.appendChild(this.$img);
     this.$el.appendChild(this.$scratchpad);
 
@@ -137,14 +142,20 @@ class wScratchPad {
         this.ctx.rect(0, 0, width, height);
         this.ctx.fill();
         this.$img.style.display = 'block';
-      }
-      else {
+      } else {
         // Have to load image before we can use it.
         let image = new Image();
         image.addEventListener('load', function () {
           _this.ctx.drawImage(this, 0, 0, width, height);
           _this.$img.style.display = 'block';
         });
+        image.addEventListener('error', function (e) {
+          _this.ctx.fillStyle = "#ccc";
+          _this.ctx.beginPath();
+          _this.ctx.rect(0, 0, width, height);
+          _this.ctx.fill();
+          _this.$img.style.display = 'block';
+        })
         image.src = this.options.fg;
         image.crossOrigin = '';
       }
